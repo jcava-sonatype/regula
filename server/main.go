@@ -100,7 +100,6 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Wrote temporary file:", uploadPath)
 
 	// Unzip the uploaded archive to the temporary directory
-	// if err := unzip(uploadPath, tmpDir); err != nil {
 	if err := untar(uploadPath, tmpDir); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
