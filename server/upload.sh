@@ -1,5 +1,5 @@
 #!/bin/bash
 
-zip -qr input.zip example_inputs
+tar -czf input.tar.gz example_inputs
 
-curl -F input=@input.zip http://localhost:8080
+curl -F input=@input.tar.gz http://localhost:8888

@@ -67,8 +67,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	// Sanity check the input
 	fileExtension := filepath.Ext(fileHeader.Filename)
-	if fileExtension != ".zip" {
-		http.Error(w, "Expected a zip file", http.StatusBadRequest)
+	if fileExtension != ".gz" {
+		http.Error(w, "Expected a gz file", http.StatusBadRequest)
 		return
 	}
 
@@ -100,10 +100,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Wrote temporary file:", uploadPath)
 
 	// Unzip the uploaded archive to the temporary directory
-	if err := unzip(uploadPath, tmpDir); err != nil {
+	// if err := unzip(uploadPath, tmpDir); err != nil {
+	if err := untar(uploadPath, tmpDir); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	inputFiles, err := findFiles(tmpDir)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -133,5 +135,5 @@ func main() {
 
 	// Run the web server forever
 	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":8888", nil))
 }
